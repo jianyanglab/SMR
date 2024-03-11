@@ -509,7 +509,7 @@ namespace SMRDATA
 
 
     void
-    read_besdfile(eqtlInfo * eqtlinfo, string besdfile, bool prtscr)
+    read_besdfile(eqtlInfo *eqtlinfo, string besdfile, bool prtscr)
     {
         if (eqtlinfo -> _include.size() == 0) 
             throw ("Error: No probe is retained for analysis.");
@@ -581,7 +581,8 @@ namespace SMRDATA
         }
          */
         
-        if(gflag == 0x40000000){
+        if(gflag == 0x40000000)
+        {
             // clear datastruct for dense befor read sparse
             cout << "This is an old file format. Please use --make-besd to update the file format." << endl;
             eqtlinfo -> _bxz.clear();
@@ -659,13 +660,13 @@ namespace SMRDATA
                       //  if(sid<eqtlinfo->_esi_include.size())
                       //  {
                             eqtlinfo->_rowid.push_back(sid);
-                            eqtlinfo->_val.push_back(*(val_ptr+pos+j));
+                            eqtlinfo->_val.push_back(*(val_ptr + pos + j));
                             real_num++;
                         }
                        
                     }
-                    eqtlinfo->_cols[(i<<1)+1]=(real_num>>1)+eqtlinfo->_cols[i<<1];
-                    eqtlinfo->_cols[i+1<<1]=real_num+eqtlinfo->_cols[i<<1];
+                    eqtlinfo->_cols[(i << 1) + 1]=(real_num>>1)+eqtlinfo->_cols[i << 1];
+                    eqtlinfo->_cols[i + 1 << 1]=real_num+eqtlinfo->_cols[i << 1];
                 }
                 eqtlinfo->_valNum = eqtlinfo->_val.size();
                 if(prtscr)  cout<<"eQTL summary data of "<<eqtlinfo->_include.size()<<" Probes and "<<eqtlinfo->_esi_include.size()<<" SNPs to be included from [" + besdfile + "]." <<endl;
@@ -883,8 +884,7 @@ namespace SMRDATA
 
             }
             free(buffer);
-        }
-        
+        }       
         else if (gflag == 0x3f800000 )
         {
             cout<<"This is an old file format. Please use --make-besd to update the file format."<<endl;
@@ -892,7 +892,7 @@ namespace SMRDATA
             eqtlinfo->_bxz.clear();
             eqtlinfo->_sexz.clear();
             
-            uint64_t colNum=eqtlinfo->_probNum<<1;
+            uint64_t colNum=eqtlinfo->_probNum << 1;
             uint64_t valNum;
             uint64_t lSize;
             char* buffer;
@@ -958,8 +958,8 @@ namespace SMRDATA
                             real_num++;
                         }
                     }
-                    eqtlinfo->_cols[(i<<1)+1]=(real_num>>1)+eqtlinfo->_cols[i<<1];
-                    eqtlinfo->_cols[i+1<<1]=real_num+eqtlinfo->_cols[i<<1];
+                    eqtlinfo->_cols[(i << 1) + 1]=(real_num>>1)+eqtlinfo->_cols[i<<1];
+                    eqtlinfo->_cols[i + 1 << 1]=real_num+eqtlinfo->_cols[i<<1];
                 }
                 eqtlinfo->_valNum = eqtlinfo->_val.size();
                 if(prtscr)  cout<<"eQTL summary data of "<<eqtlinfo->_include.size()<<" Probes and "<<eqtlinfo->_esi_include.size()<<" SNPs to be included from [" + besdfile + "]." <<endl;
@@ -980,29 +980,28 @@ namespace SMRDATA
             // terminate
             free (buffer);
         }
-        
         else if (gflag == SPARSE_FILE_TYPE_3F || gflag == SPARSE_FILE_TYPE_3)
         {
             // clear datastruct for dense befor read sparse
             eqtlinfo->_bxz.clear();
             eqtlinfo->_sexz.clear();
             char* buffer;
-            uint64_t colNum=(eqtlinfo->_probNum<<1)+1;
+            uint64_t colNum=(eqtlinfo -> _probNum << 1) + 1; // ?
             uint64_t valNum;
             uint64_t lSize;
            
-            besd.seekg(0,besd.end);
-            lSize = besd.tellg();
+            besd.seekg(0,besd.end); // 将besd这个输入文件流的读取位置设置到文件的末尾
+            lSize = besd.tellg(); // tellg函数返回的是当前的读取位置，因为读取位置现在在文件的末尾，所以tellg函数返回的值就是文件的长度（以字节为单位）
             
             besd.seekg(4); // same as besd.seekg(4, besd.beg);
             if(gflag == SPARSE_FILE_TYPE_3)
             {
-                int length=(RESERVEDUNITS-1)*sizeof(int);
-                char* indicators=new char[length];
+                int length = (RESERVEDUNITS - 1) * sizeof(int);
+                char* indicators = new char[length];
                 besd.read(indicators,length);
                 int* tmp=(int *)indicators;
-                int ss=*tmp++;
-                if(ss!=-9)
+                int ss = *tmp++;
+                if(ss != -9)
                 {
                     printf("The sample size is %d.\n",ss);
                 }
@@ -1078,16 +1077,16 @@ namespace SMRDATA
                 for(int i=0;i<eqtlinfo->_include.size();i++)
                 {
                     uint32_t pid=eqtlinfo->_include[i];
-                    uint64_t pos=*(ptr+(pid<<1)); //BETA START
-                    uint64_t pos1=*(ptr+(pid<<1)+1); //SE START
+                    uint64_t pos=*(ptr + (pid << 1)); //BETA START
+                    uint64_t pos1=*(ptr + (pid << 1) + 1); //SE START
                     uint64_t num=pos1-pos;
                     uint64_t real_num=0;
-                    if(num==0) {
+                    if(num == 0) 
+                    {
                         eqtlinfo->_cols[(i<<1)+1]=eqtlinfo->_cols[i<<1];
                         eqtlinfo->_cols[i+1<<1]=eqtlinfo->_cols[i<<1];
                         //printf("WARNING: Probe %s with no eQTL found.\n",eqtlinfo->_epi_prbID[pid].c_str());
                         continue;
-                        
                     }
                     char* row_char_ptr;
                     row_char_ptr = (char*) malloc (sizeof(char)*2*num*sizeof(uint32_t));
@@ -1103,7 +1102,7 @@ namespace SMRDATA
                     besd.seekg(valSTART+pos*sizeof(float));
                     besd.read(val_char_ptr, 2*num*sizeof(float));
                     float* val_ptr=(float*)val_char_ptr;
-                    for(int j=0;j<num<<1;j++)
+                    for(int j=0;j < num << 1;j++)
                     {
                         uint32_t rid=*(row_ptr+j);
                         
@@ -1112,18 +1111,19 @@ namespace SMRDATA
                         if(iter!=_incld_id_map.end())
                         {
                             int sid=iter->second;
-                            
                             eqtlinfo->_rowid.push_back(sid);
                             eqtlinfo->_val.push_back(*(val_ptr+j));
+                            printf("%d %s ", sid, *(val_ptr+j));
                             real_num++;
                         }
-                        
                     }
+                    printf("\n");
                     eqtlinfo->_cols[(i<<1)+1]=(real_num>>1)+eqtlinfo->_cols[i<<1];
                     eqtlinfo->_cols[i+1<<1]=real_num+eqtlinfo->_cols[i<<1];
                     free(row_char_ptr);
                     free(val_char_ptr);
                 }
+                // outFile.close();
                 eqtlinfo->_valNum = eqtlinfo->_val.size();
                
                 if(prtscr)  cout<<"eQTL summary data of "<<eqtlinfo->_include.size()<<" Probes to be included from [" + besdfile + "]." <<endl;
@@ -3874,7 +3874,7 @@ namespace SMRDATA
                     {
                         if(esdata->_epi_start.size()>0 && esdata->_epi_end.size()>0) //technical eQTLs should be removed
                         {
-                            if(esdata->_epi_end[i]==-9 || (snpbp>esdata->_epi_end[i] && snpbp<esdata->_epi_start[i]))
+                            if(esdata->_epi_end[i]==-9 || (snpbp > esdata->_epi_end[i] && snpbp<esdata->_epi_start[i]))
                             {
                                 smrwk->bxz.push_back((double)esdata->_bxz[i][j]);
                                 smrwk->sexz.push_back((double)esdata->_sexz[i][j]);
@@ -3924,10 +3924,10 @@ namespace SMRDATA
             
         }
         else{
-            uint64_t beta_start=esdata->_cols[i<<1];
-            uint64_t se_start=esdata->_cols[1+(i<<1)];
-            uint64_t numsnps=se_start-beta_start;
-            for(int j=0;j<numsnps;j++)
+            uint64_t beta_start=esdata->_cols[i << 1];
+            uint64_t se_start=esdata->_cols[1 + (i << 1)];
+            uint64_t numsnps = se_start - beta_start;
+            for(int j = 0; j < numsnps; j++)
             {
                 int ge_rowid=esdata->_rowid[beta_start+j];
                 int snpbp=esdata->_esi_bp[ge_rowid];
@@ -3938,9 +3938,9 @@ namespace SMRDATA
                     {
                         if(esdata->_epi_end[i]==-9 || (snpbp>esdata->_epi_end[i] && snpbp<esdata->_epi_start[i]))
                         {
-                            smrwk->bxz.push_back((double)esdata->_val[beta_start+j]);
-                            smrwk->sexz.push_back((double)esdata->_val[se_start+j]);
-                            smrwk->zxz.push_back((double)esdata->_val[beta_start+j] / (double)esdata->_val[se_start+j]);
+                            smrwk->bxz.push_back((double)esdata->_val[beta_start + j]);
+                            smrwk->sexz.push_back((double)esdata->_val[se_start + j]);
+                            smrwk->zxz.push_back((double)esdata->_val[beta_start + j] / (double)esdata->_val[se_start+j]);
                             smrwk->byz.push_back(gdata->byz[ge_rowid]);
                             smrwk->seyz.push_back(gdata->seyz[ge_rowid]);
                             smrwk->pyz.push_back(gdata->pvalue[ge_rowid]);
@@ -3971,6 +3971,11 @@ namespace SMRDATA
                         smrwk->pyz.push_back(gdata->pvalue[ge_rowid]);
                         smrwk->curId.push_back(ge_rowid); //save snp id of the raw datastruct
                         smrwk->rs.push_back(esdata->_esi_rs[ge_rowid]);
+                        if (strcmp("rs2616392", esdata->_esi_rs[ge_rowid].c_str()) == 0) 
+                        {
+                            printf("se_start: %d, beta_start: %d j: %d, ge_rowid: %d\n", se_start, beta_start, j, ge_rowid);
+                            printf("esdata->_bxz: %lf, esdata->_sexz: %lf\n", (double)esdata->_val[beta_start + j], esdata->_val[beta_start + j + 1]);
+                        }
                         smrwk->snpchrom.push_back(esdata->_esi_chr[ge_rowid]);
                         smrwk->allele1.push_back(esdata->_esi_allele1[ge_rowid]);
                         smrwk->allele2.push_back(esdata->_esi_allele2[ge_rowid]);

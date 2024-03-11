@@ -2650,8 +2650,8 @@ namespace SMRDATA
         printf("\nScaning %d ESD files to generate BESD file...\n", esdfileNum);
         if(save_dense_flag)
         {
-            double sparsity=1.0*ttlv/(esiNum*epiNum);
-            if(sparsity>=0.4)
+            double sparsity = 1.0*ttlv/(esiNum*epiNum);
+            if(sparsity >= 0.4)
             {
                 //printf("The density of your data is %f. The data will be saved in dense format.\n", sparsity);
                 save_txts_dbesd(outFileName, esiNum, epiNum,epi2esd, prbiflst,fformat, esi_rs, esi_a1,esi_a2,addn);

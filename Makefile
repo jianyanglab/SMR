@@ -1,12 +1,13 @@
-#Makfile for linux
+#Makefile for linux
 
-EIGEN_PATH := /usr/include
-ZLIB_INCLUDE := /usr/include
-ZLIB_LIB := /usr/lib64
+
+EIGEN_PATH := /usr/local/include
+ZLIB_INCLUDE := /usr/local/include
+ZLIB_LIB := /usr/local/lib
 DEBUG := 
 
-CC = gcc
-CXX = g++
+CC = /opt/homebrew/Cellar/gcc/13.2.0/bin/gcc-13
+CXX = /opt/homebrew/Cellar/gcc/13.2.0/bin/g++-13
 
 ifdef DEBUG
 CFLAGS = -g -O0 -Wall
@@ -17,7 +18,7 @@ CXXFLAGS = -O3 -Wall
 endif
 
 CPPFLAGS = 
-LDFLAGS = 
+LDFLAGS = -Llibs
 LIBS =  -lm -lz -lomp
 
 objs = $(patsubst %.cpp,%.o,$(wildcard src/*.cpp))

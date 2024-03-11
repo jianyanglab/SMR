@@ -794,7 +794,7 @@ namespace SMRDATA
                 uint64_t colNum=(etmp._probNum<<1)+1;
                 fseek(fptr, 0L, SEEK_END);
                 uint64_t lSize = 0;
-#if defined __linux
+#if defined __linux || __APPLE__ || __MACH__
                 long fsize = 0;
                 fsize = ftell(fptr);
 #elif defined _WIN32 || _WIN64

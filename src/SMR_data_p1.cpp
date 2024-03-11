@@ -2447,7 +2447,7 @@ namespace SMRDATA
             for(int ii=0;ii<set_name.size();ii++)
             {
                 progr1=1.0*ii/set_name.size();
-                if(progr1-progr0-0.05>1e-6 || ii+1==set_name.size())
+                if(progr1-progr0-0.05 > 1e-6 || ii+1==set_name.size())
                 {
                     if(ii+1==probNum) progr1=1.0;
                     progress_print(progr1);
@@ -2480,7 +2480,6 @@ namespace SMRDATA
                     }
                     
                 }
-                
                 
                 int lowerbp=gene_bp1[ii];
                 int upperbp=gene_bp2[ii];
@@ -2611,8 +2610,6 @@ namespace SMRDATA
                     printf("Conducting HEIDI test...\n");
                     pdev= heidi_test_new(&bdata,&smrwk, ld_top,  threshold,  m_hetero, nsnp,ld_min,opt_hetero,sampleoverlap, theta);
                 }
-                
-                
                 outstr = probename + '\t' + atos(probechr) + '\t' + probegene + '\t' + atos(probebp) + '\t' + topsnpname + '\t' + atos(esdata._esi_chr[out_raw_id]) + '\t' + atos(esdata._esi_bp[out_raw_id]) + '\t' + esdata._esi_allele1[out_raw_id] + '\t' + esdata._esi_allele2[out_raw_id] + '\t' + atos(bdata._mu[bdata._include[out_raw_id]] / 2) + '\t';
                 //outstr += atos(byz_max) + '\t' + atos(seyz_max) + '\t' + dtos(pyz_max) + '\t' + dtos(set_pval_gwas) + '\t';
                 //outstr += atos(bxz_max) + '\t' + atos(sexz_max) + '\t' + dtos(pxz_max) + '\t' + dtos(set_pval_eqtl) + '\t';
@@ -2649,7 +2646,7 @@ namespace SMRDATA
                 smrwk.cur_prbidx=i;
                 // step1: get cis-eQTLs
                 printf("\nInitiating the workspace of probe %s for multi-SNP SMR analysis....\n",probename.c_str());
-                long maxid =fill_smr_wk(&bdata, &gdata, &esdata, &smrwk, refSNP, cis_itvl, heidioffFlag);
+                long maxid = fill_smr_wk(&bdata, &gdata, &esdata, &smrwk, refSNP, cis_itvl, heidioffFlag);
                 if(refSNP!=NULL && maxid==-9) {
                     printf("WARNING: can't find target SNP %s for probe %s.\n",refSNP, probename.c_str());
                     continue;
@@ -2664,6 +2661,7 @@ namespace SMRDATA
                 printf("Checking the top-SNP in the region....\n");
                 Map<VectorXd> ei_bxz(&smrwk.bxz[0],smrwk.bxz.size());
                 Map<VectorXd> ei_sexz(&smrwk.sexz[0],smrwk.sexz.size());
+
                 VectorXd zsxz;
                 zsxz=ei_bxz.array()/ei_sexz.array();
                 if(refSNP==NULL) maxid=max_abs_id(zsxz); // now maxid point to the sig eQTL SNP or ref SNP in the new datastruct(not the raw).
@@ -2815,7 +2813,6 @@ namespace SMRDATA
                     pdev= heidi_test_new(&bdata,&smrwk, ld_top,  threshold,  m_hetero, nsnp,ld_min,opt_hetero,sampleoverlap, theta);
                     printf("HEIDI test complete.\n");
                 }
-                
                 outstr = probename + '\t' + atos(probechr) + '\t' + probegene + '\t' + atos(probebp) + '\t' + topsnpname + '\t' + atos(esdata._esi_chr[out_raw_id]) + '\t' + atos(esdata._esi_bp[out_raw_id]) + '\t' + esdata._esi_allele1[out_raw_id] + '\t' + esdata._esi_allele2[out_raw_id] + '\t' + atos(bdata._mu[bdata._include[out_raw_id]] / 2) + '\t';
                 //outstr += atos(byz_max) + '\t' + atos(seyz_max) + '\t' + dtos(pyz_max) + '\t' + dtos(set_pval_gwas) + '\t';
                 //outstr += atos(bxz_max) + '\t' + atos(sexz_max) + '\t' + dtos(pxz_max) + '\t' + dtos(set_pval_eqtl) + '\t';
@@ -2831,9 +2828,6 @@ namespace SMRDATA
                 write_count++;
                 
             }
-
-
-
         }
 
         cout<<"\nMultiple-SNP SMR and HEIDI analyses completed.\nSMR and heterogeneity analysis results of "<<write_count<<" sets have been saved in the file [" + smrfile + "]."<<endl;
