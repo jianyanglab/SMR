@@ -669,11 +669,6 @@ namespace SMRDATA
         if (bdata._mu.empty()) calcu_mu(&bdata);
         if (maf > 0) filter_snp_maf(&bdata, maf);
         int m=getMaxNum(&bdata,ldWind, cols);
-        std::cout << "m: " << m << std::endl;
-        for(int i=0;i<cols.size(); i++){
-            std::cout << "cols: " << i << "\t" << cols[i] << std::endl;
-        }
-        std::cout << "bdata._include.size: " << bdata._include.size() << std::endl;
         if(m==1)
         {
             printf("No SNP pair included in %d Kb.\n",ldWind);
@@ -755,8 +750,6 @@ namespace SMRDATA
             }
             //printf(" cost3: %f ms.\n",float( clock () - begin_time ) /  1000);
         }
-        std::cout << "vc: " << vc << std::endl;
-        std::cout << "valnum: " << valnum << std::endl;
         if(vc!=valnum)
         {
             printf("Error: predicted number vs observed number: %ld, %llu.\n",vc,valnum);

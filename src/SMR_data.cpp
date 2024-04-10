@@ -1111,19 +1111,18 @@ namespace SMRDATA
                         if(iter!=_incld_id_map.end())
                         {
                             int sid=iter->second;
+
                             eqtlinfo->_rowid.push_back(sid);
                             eqtlinfo->_val.push_back(*(val_ptr+j));
-                            printf("%d %s ", sid, *(val_ptr+j));
                             real_num++;
                         }
+
                     }
-                    printf("\n");
                     eqtlinfo->_cols[(i<<1)+1]=(real_num>>1)+eqtlinfo->_cols[i<<1];
                     eqtlinfo->_cols[i+1<<1]=real_num+eqtlinfo->_cols[i<<1];
                     free(row_char_ptr);
                     free(val_char_ptr);
                 }
-                // outFile.close();
                 eqtlinfo->_valNum = eqtlinfo->_val.size();
                
                 if(prtscr)  cout<<"eQTL summary data of "<<eqtlinfo->_include.size()<<" Probes to be included from [" + besdfile + "]." <<endl;
@@ -3971,11 +3970,6 @@ namespace SMRDATA
                         smrwk->pyz.push_back(gdata->pvalue[ge_rowid]);
                         smrwk->curId.push_back(ge_rowid); //save snp id of the raw datastruct
                         smrwk->rs.push_back(esdata->_esi_rs[ge_rowid]);
-                        if (strcmp("rs2616392", esdata->_esi_rs[ge_rowid].c_str()) == 0) 
-                        {
-                            printf("se_start: %d, beta_start: %d j: %d, ge_rowid: %d\n", se_start, beta_start, j, ge_rowid);
-                            printf("esdata->_bxz: %lf, esdata->_sexz: %lf\n", (double)esdata->_val[beta_start + j], esdata->_val[beta_start + j + 1]);
-                        }
                         smrwk->snpchrom.push_back(esdata->_esi_chr[ge_rowid]);
                         smrwk->allele1.push_back(esdata->_esi_allele1[ge_rowid]);
                         smrwk->allele2.push_back(esdata->_esi_allele2[ge_rowid]);
